@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!--开启注解扫描-->
+    <context:component-scan base-package="com.csw" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--开启注解驱动-->
+    <mvc:annotation-driven/>
+
+    <!--配置视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--放行静态资源-->
+    <mvc:default-servlet-handler/>
+
+
+    <!--配置文件上传解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--单位字节 用来控制文件上传大小限制 这里是20M-->
+        <!-- <property name="maxUploadSize" value="20971520"/>-->
+    </bean>
+
+
+    <!--配置拦截器-->
+    <bean id="myInterceptor1" class="com.csw.interceptors.MyInterceptor1"></bean>
+    <bean id="myInterceptor2" class="com.csw.interceptors.MyInterceptor2"></bean>
+
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--拦截的请求是谁-->
+            <mvc:mapping path="/file/**"/>
+            <!--放行某些请求-->
+            <!--<mvc:exclude-mapping path="/json/test2"/>-->
+            <ref bean="myInterceptor1"/>
+        </mvc:interceptor>
+
+        <!--mvc:interceptor>
+            <mvc:mapping path="/json/test2"/>
+            <ref bean="myInterceptor2"></ref>
+        </mvc:interceptor>-->
+    </mvc:interceptors>
+</beans>

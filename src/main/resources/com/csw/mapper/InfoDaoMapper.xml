@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csw.dao.InfoDao">
+    <resultMap type="Infos" id="xx">
+        <id column="iid" property="id"/>
+        <result column="iname" property="name"/>
+        <result column="iage" property="age"/>
+        <result column="ibir" property="bir"/>
+        <result column="iphone" property="phone"/>
+        <result column="iqq" property="qq"/>
+        <result column="ishengx" property="shengx"/>
+        <result column="ixingz" property="xingz"/>
+        <result column="ibeiz" property="beiz"/>
+
+        <association property="clazz" javaType="Clazz">
+            <id column="cid" property="id"/>
+            <result column="cname" property="name"/>
+            <result column="ctag" property="tag"/>
+        </association>
+
+        <association property="xiaoz" javaType="Xiaoz">
+            <id column="xid" property="id"/>
+            <result column="xname" property="name"/>
+            <result column="xtag" property="tag"/>
+            <result column="xnickname" property="nickname"/>
+            <result column="xtag" property="tag"/>
+            <result column="xdd" property="dd"/>
+        </association>
+
+
+        <association property="city" javaType="City">
+            <id column="tid" property="id"/>
+            <result column="tname" property="name"/>
+            <result column="tdd" property="dd"/>
+        </association>
+
+        <collection property="taglibs" javaType="list" ofType="Taglib">
+            <id column="bid" property="id"/>
+            <result column="bname" property="name"/>
+            <result column="btag" property="tag"/>
+            <result column="bdd" property="dd"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="queryAll5" resultMap="xx">
+    select i.id as iid,i.name as iname,i.age as iage,i.bir as ibir,i.phone as iphone
+        ,i.qq as iqq,i.shengx as ishengx,i.xingz as ixingz,i.beiz as ibeiz,i.tid as itid
+        ,i.cid as icid,i.bid as ibid,
+        i.xid as ixid,
+        x.name as xname,x.nickname as xnickname,x.id as xid,x.tag as xtag
+        ,x.dd as xdd,
+        c.id as cid,c.name as cname,c.tag as ctag,
+        b.id as bid,b.name as bname,b.tag as btag ,b.dd as bdd,
+        t.id as tid,t.name as tname,t.dd as tdd
+       /* z.id as zid,z.bid as zbid,z.iid as ziid*/
+        from infos i,xiaoz x,clazz c,taglib b,tagz z,city t where x.id=i.xid and c.id=i.cid
+        /*and i.bid=b.id */and i.tid=t.id and z.iid=i.id and z.bid=b.id
+</select>
+    <select id="query2" resultMap="xx">
+        select i.id as iid,i.name as iname,i.age as iage,i.bir as ibir,i.phone as iphone
+        ,i.qq as iqq,i.shengx as ishengx,i.xingz as ixingz,i.beiz as ibeiz,i.tid as itid
+        ,i.cid as icid,i.bid as ibid,
+        i.xid as ixid,
+        x.name as xname,x.nickname as xnickname,x.id as xid,x.tag as xtag
+        ,x.dd as xdd,
+        c.id as cid,c.name as cname,c.tag as ctag,
+        b.id as bid,b.name as bname,b.tag as btag ,b.dd as bdd,
+        t.id as tid,t.name as tname,t.dd as tdd
+        /* z.id as zid,z.bid as zbid,z.iid as ziid*/
+        from infos i,xiaoz x,clazz c,taglib b,tagz z,city t where x.id=i.xid and c.id=i.cid
+        /*and i.bid=b.id */and i.tid=t.id and z.iid=i.id and z.bid=b.id
+        <if test="t=='nameValue'">and i.name like '%${i}%'</if>
+        <if test="t=='clazzValue'">and c.name like '%${i}%'</if>
+        <if test="t=='taglibValue'">and b.name like '%${i}%'</if>
+    </select>
+
+    <select id="queryAll5id" resultMap="xx">
+      select i.id as iid,i.name as iname,i.age as iage,i.bir as ibir,i.phone as iphone
+        ,i.qq as iqq,i.shengx as ishengx,i.xingz as ixingz,i.beiz as ibeiz,i.tid as itid
+        ,i.cid as icid,i.bid as ibid,
+        i.xid as ixid,
+        x.name as xname,x.nickname as xnickname,x.id as xid,x.tag as xtag
+        ,x.dd as xdd,
+        c.id as cid,c.name as cname,c.tag as ctag,
+        b.id as bid,b.name as bname,b.tag as btag ,b.dd as bdd,
+        t.id as tid,t.name as tname,t.dd as tdd
+       /* z.id as zid,z.bid as zbid,z.iid as ziid*/
+        from infos i,xiaoz x,clazz c,taglib b,tagz z,city t where x.id=i.xid and c.id=i.cid
+        /*and i.bid=b.id */and i.tid=t.id and z.iid=i.id and z.bid=b.id AND i.id=#{id}
+    </select>
+
+    <delete id="delete">
+        delete from infos where id=#{id}
+    </delete>
+    <insert id="insert">
+        insert into infos VALUES (#{i.id},#{i.name},#{i.age},#{i.bir},#{i.phone},
+        #{i.qq},#{i.shengx},#{i.xingz},#{i.beiz},#{i.tid},#{i.cid},#{i.xid},#{i.bid,jdbcType=NULL})
+    </insert>
+    <update id="update">
+        update infos set name=#{i.name},age=#{i.age},bir=#{i.bir},phone=#{i.phone},
+        qq=#{i.qq},shengx=#{i.shengx},xingz=#{i.xingz},beiz=#{i.beiz},tid=#{i.tid},cid=#{i.cid},
+        xid=#{i.xid},bid=#{i.xid},bid=#{i.bid,jdbcType=NULL} where id=#{i.id}
+    </update>
+    <select id="queryByGroupId" resultType="Infos">
+        select  * from infos where xid=#{id}
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

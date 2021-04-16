@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csw.dao.ClazzDao">
+
+    <select id="queryAll" resultType="Clazz">
+        SELECT id,name,tag from clazz
+    </select>
+
+    <insert id="add">
+        insert into clazz values(null,#{c.name},#{c.tag})
+    </insert>
+    <select id="queryAllByName" resultType="Clazz">
+        select id,name,tag from clazz where name like '%${name}%'
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

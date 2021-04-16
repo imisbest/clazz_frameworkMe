@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csw.dao.XaiozDao">
+    <resultMap type="Xiaoz" id="xx">
+        <id column="xid" property="id"/>
+        <result column="xname" property="name"/>
+        <result column="xnickname" property="nickname"/>
+        <result column="xtag" property="tag"/>
+        <result column="xdd" property="dd"/>
+        <association property="clazz" javaType="Clazz">
+            <id column="cid" property="id"/>
+            <result column="cname" property="name"/>
+            <result column="ctag" property="tag"/>
+        </association>
+
+    </resultMap>
+    <select id="queryAll2" resultMap="xx">
+        select x.name as xname,x.nickname as xnickname,x.id as xid,x.tag as xtag
+        ,x.dd as xdd,
+        c.id as cid,c.name as cname,c.tag as ctag
+        from xiaoz x,clazz c where x.cid=c.id
+    </select>
+
+    <insert id="add">
+        INSERT into xiaoz values(null,#{x.name},#{x.nickname},#{x.tag},#{x.dd},#{x.cid})
+    </insert>
+
+    <select id="findBy" resultMap="xx">
+        select x.name as xname,x.nickname as xnickname,x.id as xid,x.tag as xtag
+        ,x.dd as xdd,
+        c.id as cid,c.name as cname,c.tag as ctag
+        from xiaoz x,clazz c where x.cid=c.id and x.id=#{id}
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
